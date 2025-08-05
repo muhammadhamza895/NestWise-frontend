@@ -10,6 +10,33 @@ export default function AdminStripeConnectSetup() {
     const [loadingSteps, setLoadingSteps] = useState([])
 
     useEffect(() => {
+        const getAccountStatus = async (id) => {
+            try {
+                const token = localStorage.getItem('token')
+                const response = await axios.post(`${Backendurl}/api/admin/get/account-status`,
+                    {
+                        connectId: id,
+                        // connectId: 'acct_1Rs9n4KHRYyguRp1'
+                    },
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
+                if (response.data.isActivated) {
+                    setCompletedSteps([1, 2, 3]);
+                }
+            } catch (error) {
+                console.error('Error Occured', error);
+                const errorMessage = error.response?.data?.message || 'Error getting stripe account status';
+                toast.error(errorMessage);
+            } finally {
+                setLoadingSteps([]);
+            }
+        }
+
         const getStripeData = async () => {
             try {
                 const token = localStorage.getItem('token');
@@ -29,6 +56,7 @@ export default function AdminStripeConnectSetup() {
                     if (response.data.success && response.data.connectId) {
                         setConnectId(response.data.connectId);
                         setCompletedSteps([1]);
+                        await getAccountStatus(response.data.connectId)
                     }
                 } catch (error) {
                     console.error('Error Occured', error);
