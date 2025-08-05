@@ -119,16 +119,16 @@ const AIPropertyHub = () => {
       console.log("Property Response:", propertyResponse); // Debug log
       setProperties(propertyResponse.properties || []);
       setIsLoading(false);
-      // if (propertyResponse?.properties?.length) {
-      //   try {
-      //     const analysisResponse = await analyzeProperties(propertyResponse.properties);
-      //     setPropertyAnalysis(analysisResponse?.analysis || "");
-      //     setIsAnalysisLoading(false)
-      //   } catch (error) {
-      //     console.error("Error during search:", error);
-      //     setSearchError("Failed to analyze property data. Please try again.");
-      //   }
-      // }
+      if (propertyResponse?.properties?.length) {
+        try {
+          const analysisResponse = await analyzeProperties(propertyResponse.properties);
+          setPropertyAnalysis(analysisResponse?.analysis || "");
+          setIsAnalysisLoading(false)
+        } catch (error) {
+          console.error("Error during search:", error);
+          setSearchError("Failed to analyze property data. Please try again.");
+        }
+      }
     } catch (error) {
       console.error("Error during search:", error);
       setSearchError("Failed to fetch property data. Please try again.");
