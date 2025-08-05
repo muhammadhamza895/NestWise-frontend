@@ -11,7 +11,8 @@ import {
   LogOut,
   LayoutDashboard,
   LogIn,
-  Database
+  Database,
+  
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -38,6 +39,7 @@ const AdminNavbar = () => {
 
   const navItems = [
     { path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { path: '/admin/stripe-setup', label: 'Stripe Setup', icon: Database },
     { path: '/admin/list', label: 'Properties', icon: List },
     { path: '/admin/add', label: 'Add Property', icon: PlusSquare },
     { path: '/admin/appointments', label: 'Appointments', icon: Calendar },
