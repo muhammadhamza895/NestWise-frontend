@@ -10,7 +10,7 @@ export default function AdminStripeConnectSetup() {
     const [loadingSteps, setLoadingSteps] = useState([])
 
     useEffect(() => {
-        const getConnectId = async () => {
+        const getStripeData = async () => {
             try {
                 const token = localStorage.getItem('token');
                 if (!token) {
@@ -26,9 +26,15 @@ export default function AdminStripeConnectSetup() {
                         },
                     });
 
-                    if (response.data.success && response.data.connectId) {
-                        setConnectId(response.data.connectId);
-                        setCompletedSteps([1]);
+                    if (response.data.success) {
+                        if (response.data.connectId) {
+                            setConnectId(response.data.connectId);
+                            setCompletedSteps([1]);
+                        }
+                         if (response.data.onboardingLink) {
+                            setOnboardingLink(response.data.onboardingLink);
+                            setCompletedSteps([2]);
+                        }
                     }
                 } catch (error) {
                     console.error('Error Occured', error);
@@ -42,7 +48,7 @@ export default function AdminStripeConnectSetup() {
             }
         }
 
-        getConnectId()
+        getStripeData()
     }, [])
 
     const generateConnectId = async () => {
