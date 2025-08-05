@@ -18,6 +18,7 @@ const AdminRoutes = () => {
 
             <Route element={<AdminProtectedRoute />}>
                 <Route path="dashboard" element={<AdminDashboard />} />
+                <Route path="stripe-setup" element={()=><></>} />
                 <Route path="list" element={<AdminPropertyList />} />
                 <Route path="add" element={<AdminPropertyAdd />} />
                 <Route path="appointments" element={<AdminAppointments />} />
