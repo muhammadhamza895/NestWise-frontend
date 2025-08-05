@@ -55,7 +55,7 @@ export default function AdminStripeConnectSetup() {
         }
 
         try {
-            const response = await axios.get(`${Backendurl}/api/admin/get/connect-Id`, {
+            const response = await axios.get(`${Backendurl}/api/admin/generate/connect-Id`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
@@ -63,10 +63,10 @@ export default function AdminStripeConnectSetup() {
             });
 
             if (response.data.success) {
-                setConnectId(response.data.connectId); // optional chaining not needed here
+                setConnectId(response.data.connectId);
                 setCompletedSteps([1]);
             } else {
-                toast.error(response.data.message || 'Failed to get Connect ID');
+                toast.error(response.data.message || 'Failed to generate Connect ID');
             }
         } catch (error) {
             console.error('Scheduling error:', error);
