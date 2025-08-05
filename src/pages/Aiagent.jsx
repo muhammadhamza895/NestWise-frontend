@@ -33,22 +33,22 @@ const AIPropertyHub = () => {
   const [searchError, setSearchError] = useState("");
   const [searchPerformed, setSearchPerformed] = useState(false);
   const [searchTrendPerformed, setSearchTrendPerformed] = useState(false);
-  const [isDeployedVersion, setIsDeployedVersion] = useState(false);
+  // const [isDeployedVersion, setIsDeployedVersion] = useState(false);
   const contentRef = useRef(null);
   const contentTrendRef = useRef(null);
 
   // Timer for loading state
-  useEffect(() => {
-    // Check if we're running in a deployed environment (not localhost)
-    const isDeployed =
-      window.location.hostname !== "localhost" &&
-      !window.location.hostname.startsWith("192.168") &&
-      !window.location.hostname.startsWith("127.0.0.1");
-    setIsDeployedVersion(isDeployed);
+  // useEffect(() => {
+  //   // Check if we're running in a deployed environment (not localhost)
+  //   const isDeployed =
+  //     window.location.hostname !== "localhost" &&
+  //     !window.location.hostname.startsWith("192.168") &&
+  //     !window.location.hostname.startsWith("127.0.0.1");
+  //   setIsDeployedVersion(isDeployed);
 
-    document.title =
-      "AI Property Hub | NestWise - Real Estate Market Analysis";
-  }, []);
+  //   document.title =
+  //     "AI Property Hub | NestWise - Real Estate Market Analysis";
+  // }, []);
 
   // Timer for loading state
   useEffect(() => {
@@ -99,12 +99,12 @@ const AIPropertyHub = () => {
   }, [isTrendLoading, searchTrendPerformed]);
 
   const handleSearch = async (searchParams) => {
-    if (isDeployedVersion) {
-      setSearchError(
-        "AI features are only available in the local development environment. Please download the repository to use this feature."
-      );
-      return;
-    }
+    // if (isDeployedVersion) {
+    //   setSearchError(
+    //     "AI features are only available in the local development environment. Please download the repository to use this feature."
+    //   );
+    //   return;
+    // }
 
     setIsLoading(true);
     setIsAnalysisLoading(true)
@@ -548,46 +548,9 @@ const AIPropertyHub = () => {
               analysis
             </p>
 
-            {isDeployedVersion ? (
-              <div className="bg-white/95 backdrop-blur rounded-lg sm:rounded-xl p-5 sm:p-6 shadow-md sm:shadow-lg">
-                <div className="flex flex-col items-center gap-4">
-                  <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
-                    <AlertCircle className="w-6 h-6 text-amber-600" />
-                  </div>
-                  <div className="text-center">
-                    <h3 className="text-lg font-semibold mb-2">
-                      AI Features Limited Online
-                    </h3>
-                    <p className="text-gray-600 mb-4">
-                      Due to API limitations, AI property features are only
-                      available in local development environment.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                      <a
-                        href="https://github.com/AAYUSH412/Real-Estate-Website"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors"
-                      >
-                        <Github className="w-4 h-4" />
-                        <span>View on GitHub</span>
-                      </a>
-                      <a
-                        href="https://github.com/AAYUSH412/Real-Estate-Website/archive/refs/heads/main.zip"
-                        className="flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-                      >
-                        <Download className="w-4 h-4" />
-                        <span>Download Repository</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="bg-white/95 backdrop-blur rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-md sm:shadow-lg">
-                <SearchForm onSearch={handleSearch} isLoading={isLoading || isAnalysisLoading} />
-              </div>
-            )}
+            <div className="bg-white/95 backdrop-blur rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-md sm:shadow-lg">
+              <SearchForm onSearch={handleSearch} isLoading={isLoading || isAnalysisLoading} />
+            </div>
           </div>
         </div>
 
@@ -669,15 +632,6 @@ const AIPropertyHub = () => {
                 better property decisions
               </p>
 
-              {isDeployedVersion && (
-                <div className="mt-4 p-4 bg-amber-50 border border-amber-100 rounded-lg text-sm text-amber-800">
-                  <p>
-                    <strong>Note:</strong> AI features are currently only
-                    available in the local development environment due to API
-                    key restrictions.
-                  </p>
-                </div>
-              )}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-8">
