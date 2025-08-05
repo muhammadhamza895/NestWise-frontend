@@ -31,9 +31,9 @@ export default function AdminStripeConnectSetup() {
                             setConnectId(response.data.connectId);
                             setCompletedSteps([1]);
                         }
-                         if (response.data.onboardingLink) {
+                        if (response.data.onboardingLink) {
                             setOnboardingLink(response.data.onboardingLink);
-                            setCompletedSteps([2]);
+                            setCompletedSteps([1, 2]);
                         }
                     }
                 } catch (error) {
@@ -85,15 +85,39 @@ export default function AdminStripeConnectSetup() {
 
 
     const generateOnboardingLink = async () => {
-        setLoadingSteps([2])
+        setLoadingSteps([2]);
 
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1500))
+        const token = localStorage.getItem('token');
+        if (!token) {
+            toast.error('Please login generate url');
+            return;
+        }
 
-        const mockLink = `https://connect.stripe.com/setup/e/${connectId}`
-        setOnboardingLink(mockLink)
-        setCompletedSteps([1, 2])
-        setLoadingSteps([])
+        try {
+            const response = await axios.post(`${Backendurl}/api/admin/generate/onboarding-url`,
+                {
+                    connectId: connectId
+                },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+            if (response.data.success) {
+                setOnboardingLink(response.data.onboardingLink);
+                setCompletedSteps([1, 2]);
+            } else {
+                toast.error(response.data.message || 'Failed to generate Onboarding url');
+            }
+        } catch (error) {
+            console.error('Onboarding error:', error);
+            const errorMessage = error.response?.data?.message || 'Error generating Onboarding url';
+            toast.error(errorMessage);
+        } finally {
+            setLoadingSteps([]);
+        }
     }
 
     const completeSetup = async () => {
@@ -194,7 +218,7 @@ export default function AdminStripeConnectSetup() {
                     </div>
 
                     {/* Step 2: Generate Onboarding Link */}
-                    <div className="flex items-start space-x-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                    <div className="flex items-start space-x-4 p-4 border border-gray-200 rounded-lg bg-gray-50 overflow-hidden">
                         <div className="flex-shrink-0">
                             <div
                                 className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${isStepCompleted(2)
@@ -221,7 +245,7 @@ export default function AdminStripeConnectSetup() {
 
                             <div className="flex items-center space-x-3">
                                 {onboardingLink && (
-                                    <div className="flex items-center space-x-2 bg-white px-3 py-2 rounded border border-gray-300 flex-1">
+                                    <div className="flex items-center space-x-2 bg-white px-3 py-2 rounded border border-gray-300 flex-1 max-w-80">
                                         <code className="text-sm font-mono text-gray-800 flex-1 truncate">{onboardingLink}</code>
                                         <button
                                             onClick={() => copyToClipboard(onboardingLink)}
