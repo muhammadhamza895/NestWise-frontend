@@ -6,6 +6,7 @@ import AdminLayout from "../adminPages/AdminLayout"
 import AdminLogin from "../adminPages/AdminLogin"
 import AdminSignup from "../adminPages/AdminSIgnup"
 import AdminDashboard from "../adminPages/AdminDashboard"
+import AdminStripeConnectSetup from "../adminPages/AdminStripeSetup"
 import AdminPropertyList from "../adminPages/AdminPropertyList"
 import AdminPropertyAdd from "../adminPages/AdminPropertyAdd"
 import AdminAppointments from "../adminPages/AdminAppointments"
@@ -18,6 +19,7 @@ const AdminRoutes = () => {
 
             <Route element={<AdminProtectedRoute />}>
                 <Route path="dashboard" element={<AdminDashboard />} />
+                <Route path="stripe-setup" element={<AdminStripeConnectSetup/>} />
                 <Route path="list" element={<AdminPropertyList />} />
                 <Route path="add" element={<AdminPropertyAdd />} />
                 <Route path="appointments" element={<AdminAppointments />} />
