@@ -26,15 +26,9 @@ export default function AdminStripeConnectSetup() {
                         },
                     });
 
-                    if (response.data.success) {
-                        if (response.data.connectId) {
-                            setConnectId(response.data.connectId);
-                            setCompletedSteps([1]);
-                        }
-                        if (response.data.onboardingLink) {
-                            setOnboardingLink(response.data.onboardingLink);
-                            setCompletedSteps([1, 2]);
-                        }
+                    if (response.data.success && response.data.connectId) {
+                        setConnectId(response.data.connectId);
+                        setCompletedSteps([1]);
                     }
                 } catch (error) {
                     console.error('Error Occured', error);
@@ -118,16 +112,6 @@ export default function AdminStripeConnectSetup() {
         } finally {
             setLoadingSteps([]);
         }
-    }
-
-    const completeSetup = async () => {
-        setLoadingSteps([3])
-
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1500))
-
-        setCompletedSteps([1, 2, 3])
-        setLoadingSteps([])
     }
 
     const copyToClipboard = (text) => {
@@ -331,14 +315,13 @@ export default function AdminStripeConnectSetup() {
 
                             <div className="flex items-center space-x-3">
                                 <button
-                                    onClick={completeSetup}
                                     disabled={!isStepCompleted(2) || isStepCompleted(3) || isStepLoading(3)}
                                     className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex-shrink-0 ${!isStepCompleted(2) || isStepCompleted(3) || isStepLoading(3)
                                         ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                                         : "bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                                         }`}
                                 >
-                                    {isStepLoading(3) ? "Completing..." : "Complete Setup"}
+                                    <a href={onboardingLink}>Complete Setup</a>
                                 </button>
                             </div>
 
