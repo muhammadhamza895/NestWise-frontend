@@ -146,6 +146,33 @@ export default function AdminStripeConnectSetup() {
         navigator.clipboard.writeText(text)
     }
 
+    const handleCheckout = async () => {
+        try {
+            const response = await axios.post(
+                `${Backendurl}/api/admin/create-checkout-session`,
+                {
+                    connectId: connectId,
+                    product: {
+                        name: 'Rent',
+                        amount: 100,
+                    }
+                },
+                // {
+                //     headers: {
+                //         Authorization: `Bearer ${token}`,
+                //     },
+                // }
+            );
+
+            if (response.data?.url) {
+                window.location.href = response.data.url; // 👈 Redirect to session
+            }
+        } catch (error) {
+            console.error('Error creating checkout session:', error);
+        }
+    };
+
+
     const isStepCompleted = (step) => completedSteps.includes(step)
     const isStepLoading = (step) => loadingSteps.includes(step)
 
@@ -375,6 +402,20 @@ export default function AdminStripeConnectSetup() {
                     )}
                 </div>
             </div>
+
+            {isStepCompleted(3) && (
+                <button
+                    onClick={handleCheckout}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-8 py-4 bg-blue-500 mx-auto mt-8
+                                      text-white rounded-2xl hover:shadow-2xl transition-all flex items-center gap-3 
+                                      font-bold text-lg shadow-xl"
+                >
+                    <span>Pay 1$</span>
+                </button>
+            )}
+
         </div>
     )
 }
